@@ -4,7 +4,19 @@
   (:import (java.lang Math))
   (:gen-class))
 
+;; pts.clj -- A simple implementation of the Weight Watchers Points Plus algorithm, as
+;; described at http://en.wikipedia.org/wiki/Weight_Watchers#PointsPlus_.28US.3B_Nov_2010-.29
+;;
+;; This code is not affiliated with Weight Watchers International in any way.
+;;
+;; This code is distributed under the Eclipse Public License. See the LICENSE file,
+;; distributed with this code for details.
+;;
+;; Copyright (c) 2014 - Joey Gibson - joey@joeygibson.com
+;;
+
 (def cli-options
+  "The list of options given to parse-opts, describing the acceptable command-line options."
   [["-f" "--fat FAT" "Fat grams"
     :default 0
     :parse-fn #(Double/parseDouble %)
@@ -28,7 +40,7 @@
    ["-h" "--help"]])
 
 (defn usage
-  "Used to print out a usage summary of the program."
+  "Used to print out a usage summary of the program options."
   [options-summary]
   (->> ["Usage: pts [options]"
         ""
@@ -48,7 +60,9 @@
   [values]
   (assoc values :fiber (min (:fiber values) 4.0)))
 
-(defn calculate-points [values]
+(defn calculate-points
+  "The formula itself. The return value is a double that is the number of points."
+  [values]
   (let [fat (:fat values)
         carbs (:carbs values)
         fiber (:fiber values)
@@ -63,7 +77,9 @@
         (Math/round)
         (max 0))))
 
-(defn display-points [values]
+(defn display-points
+  "Print out the points that the formula computed."
+  [values]
   (println values))
 
 (defn -main [& args]
